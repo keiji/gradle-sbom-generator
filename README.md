@@ -52,7 +52,7 @@ This software analyzes a dependencies file created by Gradle, obtains the depend
 ```
 
 <details>
-<summary>dependencies.txt</summary>
+<summary>Example: dependencies.txt</summary>
 
 ```
 
@@ -118,10 +118,47 @@ BUILD SUCCESSFUL in 662ms
 java -jar build/libs/gradle-dependencies-0.0.2-all.jar ./settings.json
 ```
 
+<details>
+<summary>Example: settings.json</summary>
+
+```
+{
+  "target_file_path": "./dependencies.txt",
+  "working_dir": "./tmp",
+  "local_repository_dirs": [
+  ],
+  "repository_urls": [
+    "https://repo1.maven.org/maven2",
+    "https://dl.google.com/android/maven2",
+    "https://maven.repository.redhat.com/ga"
+  ],
+  "remove_conflicting_versions": true,
+  "ignore_scopes": [
+    "test",
+    "runtime"
+  ],
+  "include_dependencies": true,
+  "include_settings": false,
+  "output": {
+    "complete": {
+      "path": "./sbom.json",
+      "override": true,
+      "is_pretty_print_enabled": true
+    },
+    "incomplete": {
+      "path": "./sbom-incomplete.json",
+      "override": false,
+      "is_pretty_print_enabled": true
+    }
+  }
+}
+```
+</details>
+
 4. SBOM `sbom.json` and `sbom-incomplete.json` will be created.
 
 <details>
-<summary>sbom.json</summary>
+<summary>Example: sbom.json (PrettyPrint enabled)</summary>
 
 ```
 {
@@ -594,8 +631,11 @@ java -jar build/libs/gradle-dependencies-0.0.2-all.jar ./settings.json
 
 `*-incomplete.json` is contained entries when applicable at least one of condition below.
 
-* Empty developer and organization
-* Empty license
+* The POM file could not be obtained from the specified repositories
+* Developers and organization information is not exist in the POM file
+* Licenses information is not declared in the POM file
+
+we need research to fill in the missing information.
 
 ### License
 
