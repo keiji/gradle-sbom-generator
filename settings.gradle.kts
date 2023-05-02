@@ -1,3 +1,3 @@
 
-rootProject.name = "gradle-dependencies"
+rootProject.name = "gradle-sbom-generator"
 

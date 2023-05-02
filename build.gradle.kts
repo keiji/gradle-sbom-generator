@@ -1,16 +1,22 @@
 plugins {
-    kotlin("jvm") version "1.8.0"
+    kotlin("jvm") version "1.8.10"
+    kotlin("plugin.serialization") version "1.8.10"
     application
+    id("com.github.johnrengelman.shadow") version "7.1.0"
 }
 
 group = "dev.keiji.sbom"
-version = "1.0-SNAPSHOT"
+version = "0.0.2"
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
+    implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.5")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+
     testImplementation(kotlin("test"))
 }
 
@@ -23,5 +29,5 @@ kotlin {
 }
 
 application {
-    mainClass.set("MainKt")
+    mainClass.set("dev.keiji.sbom.maven.gradle.MainKt")
 }
