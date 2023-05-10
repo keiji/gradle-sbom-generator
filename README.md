@@ -111,11 +111,11 @@ BUILD SUCCESSFUL in 662ms
 ./gradlew shadowJar
 ```
 
-3. Run `build/libs/gradle-dependencies-0.0.2-all.jar`. 
-  * Jar file is here [gradle-dependencies-0.0.2-all.jar](https://github.com/keiji/gradle-sbom-generator/releases/download/v0.0.2/gradle-dependencies-0.0.2-all.jar).
+3. Run `build/libs/gradle-dependencies-0.0.3-all.jar`. 
+  * Jar file is here [gradle-dependencies-0.0.3-all.jar](https://github.com/keiji/gradle-sbom-generator/releases/download/v0.0.3/gradle-sbom-generator-0.0.3-all.jar).
 
 ```
-java -jar build/libs/gradle-dependencies-0.0.2-all.jar ./settings.json
+java -jar build/libs/gradle-dependencies-0.0.3-all.jar ./settings.json
 ```
 
 <details>
