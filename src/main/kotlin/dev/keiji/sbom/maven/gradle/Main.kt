@@ -33,7 +33,7 @@ fun main(args: Array<String>) {
     val libraryList = mutableListOf<Library>()
 
     dependenciesFile.readLines(charset = StandardCharsets.UTF_8).forEach { line ->
-        val library = parseLine(line) ?: return@forEach
+        val library = Library.parseLine(line) ?: return@forEach
         libraryList.add(library)
     }
 
@@ -173,38 +173,3 @@ fun saveFile(content: String, filePath: String?, override: Boolean) {
     }
 
 }
-
-private const val LINE_MARKER = "--- "
-
-private fun parseLine(line: String): Library? {
-    if (!line.contains(LINE_MARKER)) {
-        return null
-    }
-
-    val index = line.indexOf(LINE_MARKER)
-    val data = line.substring(index + LINE_MARKER.length).trim()
-    val splitted = data.split(":").map { it.trim() }
-
-    if (splitted.first() == "project") {
-        return null
-    }
-
-    val groupId = splitted[0]
-    val artifactId = splitted[1]
-    val version = processVersion(splitted[2])
-    val depth = line.count { it == '|' }
-
-    return Library(groupId, artifactId, version, depth)
-}
-
-private fun processVersion(versionStr: String): String {
-    val index = versionStr.lastIndexOf("(")
-    val versions = if (index > -1) {
-        versionStr.substring(0, index)
-    } else {
-        versionStr
-    }
-
-    return versions.split("->").last().trim()
-}
-
