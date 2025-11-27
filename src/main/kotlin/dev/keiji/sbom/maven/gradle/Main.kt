@@ -126,7 +126,7 @@ fun main(args: Array<String>) {
             encodeDefaults = true
         }
 
-        val jsonText = if (outputSettings.format == "SPDX") {
+        val jsonText = if (outputSettings.format == FORMAT_SPDX) {
             val spdx = convertToSpdx(validList, "complete")
             json.encodeToString(spdx)
         } else {
@@ -151,7 +151,7 @@ fun main(args: Array<String>) {
             encodeDefaults = true
         }
 
-        val jsonText = if (outputSettings.format == "SPDX") {
+        val jsonText = if (outputSettings.format == FORMAT_SPDX) {
             val spdx = convertToSpdx(invalidList, "incomplete")
             json.encodeToString(spdx)
         } else {
@@ -173,7 +173,9 @@ fun main(args: Array<String>) {
     println("Finished.")
 }
 
-fun convertToSpdx(pomList: List<Pom>, nameSuffix: String): SpdxDocument {
+private const val FORMAT_SPDX = "SPDX"
+
+private fun convertToSpdx(pomList: List<Pom>, nameSuffix: String): SpdxDocument {
     val packages = pomList.map { pom ->
         val organizationName = pom.organization?.name
         val supplier = if (organizationName != null) {
@@ -233,7 +235,7 @@ fun convertToSpdx(pomList: List<Pom>, nameSuffix: String): SpdxDocument {
     )
 }
 
-fun sanitize(input: String): String {
+private fun sanitize(input: String): String {
     return input.replace(Regex("[^a-zA-Z0-9.-]"), "-")
 }
 
