@@ -42,5 +42,8 @@ data class Settings(
 
         @SerialName("is_pretty_print_enabled")
         val isPrettyPrintEnabled: Boolean,
+
+        @SerialName("format")
+        val format: String = "legacy",
     )
 }

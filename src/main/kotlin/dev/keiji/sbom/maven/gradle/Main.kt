@@ -3,14 +3,22 @@ package dev.keiji.sbom.maven.gradle
 import dev.keiji.sbom.maven.PomParser
 import dev.keiji.sbom.maven.entity.Pom
 import dev.keiji.sbom.maven.entity.PomComparator
+import dev.keiji.sbom.maven.gradle.entity.CreationInfo
 import dev.keiji.sbom.maven.gradle.entity.Library
 import dev.keiji.sbom.maven.gradle.entity.SbomContainer
 import dev.keiji.sbom.maven.gradle.entity.Settings
+import dev.keiji.sbom.maven.gradle.entity.SpdxDocument
+import dev.keiji.sbom.maven.gradle.entity.SpdxPackage
+import dev.keiji.sbom.maven.gradle.entity.SpdxRelationship
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
 import java.nio.charset.StandardCharsets
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.UUID
 
 fun main(args: Array<String>) {
     if (args.isEmpty()) {
@@ -118,13 +126,17 @@ fun main(args: Array<String>) {
             encodeDefaults = true
         }
 
-        val sbom = if (settings.includeSettings) {
-            SbomContainer(settings, validList)
+        val jsonText = if (outputSettings.format == "SPDX") {
+            val spdx = convertToSpdx(validList, "complete")
+            json.encodeToString(spdx)
         } else {
-            SbomContainer(null, validList)
+            val sbom = if (settings.includeSettings) {
+                SbomContainer(settings, validList)
+            } else {
+                SbomContainer(null, validList)
+            }
+            json.encodeToString(sbom)
         }
-
-        val jsonText = json.encodeToString(sbom)
 
         saveFile(
             jsonText,
@@ -139,13 +151,17 @@ fun main(args: Array<String>) {
             encodeDefaults = true
         }
 
-        val sbom = if (settings.includeSettings) {
-            SbomContainer(settings, invalidList)
+        val jsonText = if (outputSettings.format == "SPDX") {
+            val spdx = convertToSpdx(invalidList, "incomplete")
+            json.encodeToString(spdx)
         } else {
-            SbomContainer(null, invalidList)
+            val sbom = if (settings.includeSettings) {
+                SbomContainer(settings, invalidList)
+            } else {
+                SbomContainer(null, invalidList)
+            }
+            json.encodeToString(sbom)
         }
-
-        val jsonText = json.encodeToString(sbom)
 
         saveFile(
             jsonText,
@@ -155,6 +171,70 @@ fun main(args: Array<String>) {
     }
 
     println("Finished.")
+}
+
+fun convertToSpdx(pomList: List<Pom>, nameSuffix: String): SpdxDocument {
+    val packages = pomList.map { pom ->
+        val organizationName = pom.organization?.name
+        val supplier = if (organizationName != null) {
+            "Organization: $organizationName"
+        } else if (pom.developers.isNotEmpty()) {
+            "Person: ${pom.developers.first().name}"
+        } else {
+            "NOASSERTION"
+        }
+
+        SpdxPackage(
+            name = pom.artifactId,
+            spdxId = "SPDXRef-Package-${sanitize(pom.groupId)}-${sanitize(pom.artifactId)}-${sanitize(pom.version)}",
+            versionInfo = pom.version,
+            downloadLocation = pom.url ?: "NOASSERTION",
+            supplier = supplier,
+        )
+    }
+
+    val packageSpdxIds = packages.map { it.spdxId }.toSet()
+    val relationships = mutableListOf<SpdxRelationship>()
+
+    pomList.forEach { pom ->
+        val spdxId = "SPDXRef-Package-${sanitize(pom.groupId)}-${sanitize(pom.artifactId)}-${sanitize(pom.version)}"
+        relationships.add(
+            SpdxRelationship(
+                spdxElementId = "SPDXRef-DOCUMENT",
+                relatedSpdxElement = spdxId,
+                relationshipType = "DESCRIBES",
+            )
+        )
+
+        pom.dependencies.forEach { dep ->
+            val depSpdxId = "SPDXRef-Package-${sanitize(dep.groupId)}-${sanitize(dep.artifactId)}-${sanitize(dep.version)}"
+            // Only add relationship if the dependency is also in the package list
+            if (packageSpdxIds.contains(depSpdxId)) {
+                relationships.add(
+                    SpdxRelationship(
+                        spdxElementId = spdxId,
+                        relatedSpdxElement = depSpdxId,
+                        relationshipType = "DEPENDS_ON",
+                    )
+                )
+            }
+        }
+    }
+
+    return SpdxDocument(
+        name = "SBOM-$nameSuffix",
+        documentNamespace = "http://spdx.org/spdxdocs/SBOM-$nameSuffix-${UUID.randomUUID()}",
+        creationInfo = CreationInfo(
+            creators = listOf("Tool: sbom-maven-gradle-0.0.3"),
+            created = DateTimeFormatter.ISO_INSTANT.withZone(ZoneId.of("UTC")).format(Instant.now()),
+        ),
+        packages = packages,
+        relationships = relationships,
+    )
+}
+
+fun sanitize(input: String): String {
+    return input.replace(Regex("[^a-zA-Z0-9.-]"), "-")
 }
 
 fun saveFile(content: String, filePath: String?, override: Boolean) {
