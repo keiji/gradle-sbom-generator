@@ -1,4 +1,4 @@
-package dev.keiji.sbom.maven.gradle.plugin
+package dev.keiji.maven.gradle.plugin
 
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -16,7 +16,7 @@ class MavenLicenseGeneratorPluginTest {
         val buildFile = File(tempDir, "build.gradle")
         buildFile.writeText("""
             plugins {
-                id 'dev.keiji.sbom.maven-license-generator'
+                id 'dev.keiji.maven-license-generator'
             }
 
             mavenLicenseGenerator {

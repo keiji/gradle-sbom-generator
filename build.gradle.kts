@@ -37,8 +37,8 @@ application {
 gradlePlugin {
     plugins {
         create("mavenLicenseGenerator") {
-            id = "dev.keiji.sbom.maven-license-generator"
-            implementationClass = "dev.keiji.sbom.maven.gradle.plugin.MavenLicenseGeneratorPlugin"
+            id = "dev.keiji.maven-license-generator"
+            implementationClass = "dev.keiji.maven.gradle.plugin.MavenLicenseGeneratorPlugin"
         }
     }
 }
