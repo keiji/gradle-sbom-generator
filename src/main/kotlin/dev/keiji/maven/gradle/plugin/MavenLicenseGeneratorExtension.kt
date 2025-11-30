@@ -10,8 +10,11 @@ import org.gradle.api.tasks.Nested
 import javax.inject.Inject
 
 abstract class MavenLicenseGeneratorExtension @Inject constructor(objects: ObjectFactory) {
-    @get:Input
-    abstract val targetFilePath: Property<String>
+    @get:Nested
+    val targets: NamedDomainObjectContainer<TargetExtension> =
+        objects.domainObjectContainer(TargetExtension::class.java) { name ->
+            objects.newInstance(TargetExtension::class.java, name, objects)
+        }
 
     @get:Input
     abstract val workingDir: Property<String>
@@ -39,6 +42,14 @@ abstract class MavenLicenseGeneratorExtension @Inject constructor(objects: Objec
         objects.domainObjectContainer(OutputSettingExtension::class.java) { name ->
             objects.newInstance(OutputSettingExtension::class.java, name, objects)
         }
+}
+
+open class TargetExtension @Inject constructor(private val name: String, objects: ObjectFactory) : Named {
+    @Input
+    override fun getName(): String = name
+
+    @get:Input
+    val configurations: ListProperty<String> = objects.listProperty(String::class.java)
 }
 
 open class OutputSettingExtension @Inject constructor(private val name: String, objects: ObjectFactory) : Named {
