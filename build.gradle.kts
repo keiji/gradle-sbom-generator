@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "1.8.10"
     kotlin("plugin.serialization") version "1.8.10"
+    `java-gradle-plugin`
     application
     id("com.github.johnrengelman.shadow") version "7.1.0"
 }
@@ -18,6 +19,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
 
     testImplementation(kotlin("test"))
+    gradleApi()
 }
 
 tasks.test {
@@ -30,4 +32,13 @@ kotlin {
 
 application {
     mainClass.set("dev.keiji.sbom.maven.gradle.MainKt")
+}
+
+gradlePlugin {
+    plugins {
+        create("mavenLicenseGenerator") {
+            id = "dev.keiji.sbom.maven-license-generator"
+            implementationClass = "dev.keiji.sbom.maven.gradle.plugin.MavenLicenseGeneratorPlugin"
+        }
+    }
 }
