@@ -10,17 +10,27 @@ class MavenLicenseGeneratorPluginTest {
 
     @Test
     fun `plugin registers task and runs successfully`(@TempDir tempDir: File) {
-        val dependenciesFile = File(tempDir, "dependencies.txt")
-        dependenciesFile.writeText("com.squareup.okhttp3:okhttp:4.10.0")
-
         val buildFile = File(tempDir, "build.gradle")
         buildFile.writeText("""
             plugins {
                 id 'dev.keiji.maven-license-generator'
+                id 'java'
+            }
+
+            repositories {
+                mavenCentral()
+            }
+
+            dependencies {
+                implementation 'com.squareup.okhttp3:okhttp:4.10.0'
             }
 
             mavenLicenseGenerator {
-                targetFilePath = 'dependencies.txt'
+                targets {
+                    create("release") {
+                        configurations = ['runtimeClasspath']
+                    }
+                }
                 workingDir = 'tmp'
                 localRepositoryDirs = []
                 repositoryUrls = ['https://repo1.maven.org/maven2']

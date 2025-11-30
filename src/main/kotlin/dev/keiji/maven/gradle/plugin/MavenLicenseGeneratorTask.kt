@@ -3,6 +3,8 @@ package dev.keiji.maven.gradle.plugin
 import dev.keiji.sbom.maven.gradle.Generator
 import dev.keiji.sbom.maven.gradle.entity.Settings
 import org.gradle.api.DefaultTask
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.TaskAction
 import javax.inject.Inject
@@ -12,9 +14,13 @@ abstract class MavenLicenseGeneratorTask @Inject constructor() : DefaultTask() {
     @get:Nested
     lateinit var extension: MavenLicenseGeneratorExtension
 
+    @get:InputFile
+    abstract val dependenciesFile: RegularFileProperty
+
     @TaskAction
     fun generate() {
-        val targetFile = project.file(extension.targetFilePath.get())
+        val targetFile = dependenciesFile.get().asFile
+
         val workingDir = project.file(extension.workingDir.get())
 
         val outputSettings = extension.outputSettings.associate {
