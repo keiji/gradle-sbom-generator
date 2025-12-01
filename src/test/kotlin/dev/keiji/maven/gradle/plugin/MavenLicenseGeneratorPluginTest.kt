@@ -56,6 +56,6 @@ class MavenLicenseGeneratorPluginTest {
         println(result.output)
 
         assertTrue(result.output.contains("BUILD SUCCESSFUL"))
-        assertTrue(File(tempDir, "sbom.json").exists())
+        assertTrue(File(tempDir, "tmp/sbom.json").exists())
     }
 }

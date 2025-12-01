@@ -111,9 +111,11 @@ class Generator {
 
             val jsonText = json.encodeToString(sbom)
 
+            val outputFilePath = resolveOutputLocation(outputSettings.path, workingDir)
+
             saveFile(
                 jsonText,
-                outputSettings.path,
+                outputFilePath.absolutePath,
                 outputSettings.override
             )
         }
@@ -132,11 +134,22 @@ class Generator {
 
             val jsonText = json.encodeToString(sbom)
 
+            val outputFilePath = resolveOutputLocation(outputSettings.path, workingDir)
+
             saveFile(
                 jsonText,
-                outputSettings.path,
+                outputFilePath.absolutePath,
                 outputSettings.override
             )
+        }
+    }
+
+    private fun resolveOutputLocation(path: String, workingDir: File): File {
+        val outputFile = File(path)
+        return if (outputFile.isAbsolute) {
+            outputFile
+        } else {
+            File(workingDir, path)
         }
     }
 

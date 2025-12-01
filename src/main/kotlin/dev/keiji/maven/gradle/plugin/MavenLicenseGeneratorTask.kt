@@ -24,9 +24,8 @@ abstract class MavenLicenseGeneratorTask @Inject constructor() : DefaultTask() {
         val workingDir = project.file(extension.workingDir.get())
 
         val outputSettings = extension.outputSettings.associate {
-            val file = project.file(it.path.get())
             it.getName() to Settings.OutputSetting(
-                path = file.absolutePath,
+                path = it.path.get(),
                 override = it.override.get(),
                 isPrettyPrintEnabled = it.prettyPrintEnabled.get()
             )
