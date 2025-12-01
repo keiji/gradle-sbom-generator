@@ -11,6 +11,12 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
 }
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
 mavenLicenseGenerator {
     workingDir.set(layout.buildDirectory.dir("sbom").get().asFile.absolutePath)
     localRepositoryDirs.set(listOf(System.getProperty("user.home") + "/.m2/repository"))
