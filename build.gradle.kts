@@ -1,9 +1,9 @@
 plugins {
-    kotlin("jvm") version "1.8.10"
-    kotlin("plugin.serialization") version "1.8.10"
+    kotlin("jvm") version "1.9.20"
+    kotlin("plugin.serialization") version "1.9.20"
     `java-gradle-plugin`
     application
-    id("com.github.johnrengelman.shadow") version "7.1.0"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 group = "dev.keiji.sbom"
@@ -26,8 +26,16 @@ tasks.test {
     useJUnitPlatform()
 }
 
+tasks.withType<Tar> {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.withType<Zip> {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 kotlin {
-    jvmToolchain(8)
+    jvmToolchain(21)
 }
 
 application {
