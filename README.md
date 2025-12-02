@@ -1,53 +1,83 @@
-SBOM(Software Bill of Materials) for Gradle *not plugin
-----
+# SBOM(Software Bill of Materials) Generator for Gradle
 
-Create an SBOM (Software Bill of Materials) from a Gradle dependencies file.
+Create an SBOM (Software Bill of Materials) from a Gradle dependencies.
 
-This software analyzes a dependencies file created by Gradle, obtains the dependency's POM (Project Object Model) files recursively, and extracts and exports each software's information.
+This software analyzes a dependencies graph, obtains the dependency's POM (Project Object Model) files recursively, and extracts and exports each software's information.
 
-```
-{
-    "group_id": "com.squareup.okhttp3",
-    "artifact_id": "okhttp",
-    "version": "4.10.0",
-    "name": "okhttp",
-    "url": "https://square.github.io/okhttp/",
-    "licenses": [
-        {
-            "name": "The Apache Software License, Version 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
-        }
-    ],
-    "developers": [
-        {
-            "name": "Square, Inc.",
-            "url": null
-        }
-    ],
-    "organization": null,
-    "dependencies": [
-        {
-            "group_id": "com.squareup.okio",
-            "artifact_id": "okio-jvm",
-            "version": "3.0.0",
-            "scope": "compile"
-        },
-        {
-            "group_id": "org.jetbrains.kotlin",
-            "artifact_id": "kotlin-stdlib",
-            "version": "1.6.20",
-            "scope": "compile"
-        }
-    ],
-    "depth": 1
-},
+## Usages
+
+You can use this tool as a Gradle Plugin or a CLI tool.
+
+### Gradle Plugin
+
+1. Apply the plugin to your `build.gradle.kts`.
+
+```kotlin
+plugins {
+    id("dev.keiji.maven-license-generator") version "0.0.3"
+}
 ```
 
-### Usage
+2. Configure the extension.
 
-1. Save dependency information to a file using Gradle.
+```kotlin
+mavenLicenseGenerator {
+    // Determine which configurations to verify.
+    targets {
+        create("main") {
+            configurations.set(listOf("runtimeClasspath"))
+        }
+    }
 
+    // Temporary working directory
+    workingDir.set(layout.buildDirectory.dir("tmp/maven-license-generator").get().asFile.absolutePath)
+
+    // Repositories to search for POM files
+    repositoryUrls.set(listOf(
+        "https://repo1.maven.org/maven2",
+        "https://dl.google.com/android/maven2",
+        "https://maven.repository.redhat.com/ga"
+    ))
+
+    // Output settings
+    outputSettings {
+        create("complete") {
+            path.set(layout.buildDirectory.file("sbom.json").get().asFile.absolutePath)
+            override.set(true)
+            prettyPrintEnabled.set(true)
+        }
+        create("incomplete") {
+            path.set(layout.buildDirectory.file("sbom-incomplete.json").get().asFile.absolutePath)
+            override.set(false)
+            prettyPrintEnabled.set(true)
+        }
+    }
+
+    // Other settings
+    removeConflictingVersions.set(true)
+    ignoreScopes.set(listOf("test", "runtime"))
+    includeDependencies.set(true)
+    includeSettings.set(false)
+}
 ```
+
+3. Run the task.
+
+```bash
+./gradlew generateMavenLicense
+```
+
+### CLI
+
+1. Build the project and export the shadow jar.
+
+```bash
+./gradlew shadowJar
+```
+
+2. Generate dependencies file using Gradle.
+
+```bash
 ./gradlew dependencies --configuration runtimeClasspath > ./dependencies.txt
 ```
 
@@ -55,7 +85,6 @@ This software analyzes a dependencies file created by Gradle, obtains the depend
 <summary>Example: dependencies.txt</summary>
 
 ```
-
 > Task :dependencies
 
 ------------------------------------------------------------
@@ -105,23 +134,12 @@ BUILD SUCCESSFUL in 662ms
 
 </details>
 
-2. Build and export jar(shadow-jar).
-
-```
-./gradlew shadowJar
-```
-
-3. Run `build/libs/gradle-dependencies-0.0.3-all.jar`. 
-  * Jar file is here [gradle-dependencies-0.0.3-all.jar](https://github.com/keiji/gradle-sbom-generator/releases/download/v0.0.3/gradle-sbom-generator-0.0.3-all.jar).
-
-```
-java -jar build/libs/gradle-dependencies-0.0.3-all.jar ./settings.json
-```
+3. Create a configuration file (e.g. `settings.json`).
 
 <details>
 <summary>Example: settings.json</summary>
 
-```
+```json
 {
   "target_file_path": "./dependencies.txt",
   "working_dir": "./tmp",
@@ -155,7 +173,13 @@ java -jar build/libs/gradle-dependencies-0.0.3-all.jar ./settings.json
 ```
 </details>
 
-4. SBOM `sbom.json` and `sbom-incomplete.json` will be created.
+4. Run the jar.
+
+```bash
+java -jar build/libs/gradle-sbom-generator-0.0.3-all.jar ./settings.json
+```
+
+## Output Example
 
 <details>
 <summary>Example: sbom.json (PrettyPrint enabled)</summary>
