@@ -18,25 +18,25 @@ java {
 }
 
 mavenLicenseGenerator {
-    workingDir.set(layout.buildDirectory.dir("sbom").get().asFile.absolutePath)
-    localRepositoryDirs.set(listOf(System.getProperty("user.home") + "/.m2/repository"))
-    repositoryUrls.set(listOf("https://repo1.maven.org/maven2"))
-    removeConflictingVersions.set(true)
-    ignoreScopes.set(listOf("test", "provided"))
-    includeDependencies.set(true)
-    includeSettings.set(true)
+    workingDir = layout.buildDirectory.dir("sbom").get().asFile.absolutePath
+    localRepositoryDirs = listOf(System.getProperty("user.home") + "/.m2/repository")
+    repositoryUrls = listOf("https://repo1.maven.org/maven2")
+    removeConflictingVersions = true
+    ignoreScopes = listOf("test", "provided")
+    includeDependencies = true
+    includeSettings = true
 
     targets {
         create("main") {
-            configurations.add("runtimeClasspath")
+            configurations = listOf("runtimeClasspath")
         }
     }
 
     outputSettings {
         // key must be "complete" or "incomplete" based on Generator implementation
         create("complete") {
-            path.set(layout.buildDirectory.file("licenses.json").get().asFile.absolutePath)
-            prettyPrintEnabled.set(true)
+            path = layout.buildDirectory.file("licenses.json").get().asFile.absolutePath
+            prettyPrintEnabled = true
         }
     }
 }
