@@ -12,6 +12,7 @@ class MavenLicenseGeneratorPlugin : Plugin<Project> {
 
         val generateTask = project.tasks.register("generateMavenLicense", MavenLicenseGeneratorTask::class.java) {
             it.extension = extension
+            it.projectDirectory.set(project.layout.projectDirectory)
         }
 
         project.afterEvaluate {
