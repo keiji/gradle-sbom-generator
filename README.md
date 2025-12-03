@@ -14,7 +14,7 @@ You can use this tool as a Gradle Plugin or a CLI tool.
 
 ```kotlin
 plugins {
-    id("dev.keiji.maven-license-generator") version "0.0.3"
+    id("dev.keiji.maven-license-generator") version "0.0.4"
 }
 ```
 
@@ -25,39 +25,39 @@ mavenLicenseGenerator {
     // Determine which configurations to verify.
     targets {
         create("main") {
-            configurations.set(listOf("runtimeClasspath"))
+            configurations = listOf("runtimeClasspath")
         }
     }
 
     // Temporary working directory
-    workingDir.set(layout.buildDirectory.dir("tmp/maven-license-generator").get().asFile.absolutePath)
+    workingDir = layout.buildDirectory.dir("tmp/maven-license-generator").get().asFile.absolutePath
 
     // Repositories to search for POM files
-    repositoryUrls.set(listOf(
+    repositoryUrls = listOf(
         "https://repo1.maven.org/maven2",
         "https://dl.google.com/android/maven2",
         "https://maven.repository.redhat.com/ga"
-    ))
+    )
 
     // Output settings
     outputSettings {
         create("complete") {
-            path.set(layout.buildDirectory.file("sbom.json").get().asFile.absolutePath)
-            override.set(true)
-            prettyPrintEnabled.set(true)
+            path = layout.buildDirectory.file("sbom.json").get().asFile.absolutePath
+            override = true
+            prettyPrintEnabled = true
         }
         create("incomplete") {
-            path.set(layout.buildDirectory.file("sbom-incomplete.json").get().asFile.absolutePath)
-            override.set(false)
-            prettyPrintEnabled.set(true)
+            path = layout.buildDirectory.file("sbom-incomplete.json").get().asFile.absolutePath
+            override = false
+            prettyPrintEnabled = true
         }
     }
 
     // Other settings
-    removeConflictingVersions.set(true)
-    ignoreScopes.set(listOf("test", "runtime"))
-    includeDependencies.set(true)
-    includeSettings.set(false)
+    removeConflictingVersions = true
+    ignoreScopes = listOf("test", "runtime")
+    includeDependencies = true
+    includeSettings = false
 }
 ```
 

@@ -79,8 +79,8 @@ publishing {
                     }
                 }
                 scm {
-                    connection = "scm:git:git://github.com/keiji/gradle-sbom-generator.git"
-                    developerConnection = "scm:git:ssh://github.com/keiji/gradle-sbom-generator.git"
+                    connection = "scm:git:https://github.com/keiji/gradle-sbom-generator.git"
+                    developerConnection = "scm:git:ssh://git@github.com/keiji/gradle-sbom-generator.git"
                     url = "https://github.com/keiji/gradle-sbom-generator"
                 }
             }
