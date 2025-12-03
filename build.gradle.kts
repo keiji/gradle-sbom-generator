@@ -62,26 +62,26 @@ publishing {
     publications {
         withType<MavenPublication> {
             pom {
-                name.set("Maven License Generator")
-                description.set("A Gradle plugin to generate SBOM/License info.")
-                url.set("https://github.com/keiji/gradle-sbom-generator")
+                name = "Maven License Generator"
+                description = "A Gradle plugin to generate SBOM/License info."
+                url = "https://github.com/keiji/gradle-sbom-generator"
                 licenses {
                     license {
-                        name.set("The Apache License, Version 2.0")
-                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                        name = "The Apache License, Version 2.0"
+                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
                     }
                 }
                 developers {
                     developer {
-                        id.set("keiji")
-                        name.set("Keiji Ariyama")
-                        email.set("keiji.ariyama@gmail.com")
+                        id = "keiji"
+                        name = "Keiji Ariyama"
+                        email = "keiji.ariyama@gmail.com"
                     }
                 }
                 scm {
-                    connection.set("scm:git:git://github.com/keiji/gradle-sbom-generator.git")
-                    developerConnection.set("scm:git:ssh://github.com/keiji/gradle-sbom-generator.git")
-                    url.set("https://github.com/keiji/gradle-sbom-generator")
+                    connection = "scm:git:git://github.com/keiji/gradle-sbom-generator.git"
+                    developerConnection = "scm:git:ssh://github.com/keiji/gradle-sbom-generator.git"
+                    url = "https://github.com/keiji/gradle-sbom-generator"
                 }
             }
         }
