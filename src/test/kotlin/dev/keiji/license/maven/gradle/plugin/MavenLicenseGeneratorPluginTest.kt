@@ -40,7 +40,7 @@ class MavenLicenseGeneratorPluginTest {
                 includeSettings = false
 
                 outputSettings.create("complete") {
-                    path.set('sbom.json')
+                    path.set('license.json')
                     override.set(true)
                     prettyPrintEnabled.set(true)
                 }
@@ -56,6 +56,6 @@ class MavenLicenseGeneratorPluginTest {
         println(result.output)
 
         assertTrue(result.output.contains("BUILD SUCCESSFUL"))
-        assertTrue(File(tempDir, "tmp/sbom.json").exists())
+        assertTrue(File(tempDir, "tmp/license.json").exists())
     }
 }
