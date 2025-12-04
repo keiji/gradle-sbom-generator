@@ -1,11 +1,11 @@
-package dev.keiji.sbom.maven.gradle
+package dev.keiji.license.maven.gradle
 
-import dev.keiji.sbom.maven.PomParser
-import dev.keiji.sbom.maven.entity.Pom
-import dev.keiji.sbom.maven.entity.PomComparator
-import dev.keiji.sbom.maven.gradle.entity.Library
-import dev.keiji.sbom.maven.gradle.entity.SbomContainer
-import dev.keiji.sbom.maven.gradle.entity.Settings
+import dev.keiji.license.maven.PomParser
+import dev.keiji.license.maven.entity.Pom
+import dev.keiji.license.maven.entity.PomComparator
+import dev.keiji.license.maven.gradle.entity.Library
+import dev.keiji.license.maven.gradle.entity.LicenseContainer
+import dev.keiji.license.maven.gradle.entity.Settings
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
@@ -103,13 +103,13 @@ class Generator {
                 encodeDefaults = true
             }
 
-            val sbom = if (settings.includeSettings) {
-                SbomContainer(settings, validList)
+            val licenseContainer = if (settings.includeSettings) {
+                LicenseContainer(settings, validList)
             } else {
-                SbomContainer(null, validList)
+                LicenseContainer(null, validList)
             }
 
-            val jsonText = json.encodeToString(sbom)
+            val jsonText = json.encodeToString(licenseContainer)
 
             val outputFilePath = resolveOutputLocation(outputSettings.path, workingDir)
 
@@ -126,13 +126,13 @@ class Generator {
                 encodeDefaults = true
             }
 
-            val sbom = if (settings.includeSettings) {
-                SbomContainer(settings, invalidList)
+            val licenseContainer = if (settings.includeSettings) {
+                LicenseContainer(settings, invalidList)
             } else {
-                SbomContainer(null, invalidList)
+                LicenseContainer(null, invalidList)
             }
 
-            val jsonText = json.encodeToString(sbom)
+            val jsonText = json.encodeToString(licenseContainer)
 
             val outputFilePath = resolveOutputLocation(outputSettings.path, workingDir)
 

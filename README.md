@@ -1,6 +1,6 @@
-# SBOM(Software Bill of Materials) Generator for Gradle
+# License information Generator for Gradle
 
-Create an SBOM (Software Bill of Materials) from a Gradle dependencies.
+Create a License information from a Gradle dependencies.
 
 This software analyzes a dependencies graph, obtains the dependency's POM (Project Object Model) files recursively, and extracts and exports each software's information.
 
@@ -42,12 +42,12 @@ mavenLicenseGenerator {
     // Output settings
     outputSettings {
         create("complete") {
-            path = layout.buildDirectory.file("sbom.json").get().asFile.absolutePath
+            path = layout.buildDirectory.file("licenses.json").get().asFile.absolutePath
             override = true
             prettyPrintEnabled = true
         }
         create("incomplete") {
-            path = layout.buildDirectory.file("sbom-incomplete.json").get().asFile.absolutePath
+            path = layout.buildDirectory.file("licenses-incomplete.json").get().asFile.absolutePath
             override = false
             prettyPrintEnabled = true
         }
@@ -159,12 +159,12 @@ BUILD SUCCESSFUL in 662ms
   "include_settings": false,
   "output": {
     "complete": {
-      "path": "./sbom.json",
+      "path": "./licenses.json",
       "override": true,
       "is_pretty_print_enabled": true
     },
     "incomplete": {
-      "path": "./sbom-incomplete.json",
+      "path": "./licenses-incomplete.json",
       "override": false,
       "is_pretty_print_enabled": true
     }
@@ -176,13 +176,13 @@ BUILD SUCCESSFUL in 662ms
 4. Run the jar.
 
 ```bash
-java -jar build/libs/gradle-sbom-generator-0.0.3-all.jar ./settings.json
+java -jar build/libs/gradle-license-generator-0.0.4-all.jar ./settings.json
 ```
 
 ## Output Example
 
 <details>
-<summary>Example: sbom.json (PrettyPrint enabled)</summary>
+<summary>Example: licenses.json (PrettyPrint enabled)</summary>
 
 ```
 {
