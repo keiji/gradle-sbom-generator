@@ -1,4 +1,4 @@
-package dev.keiji.maven.gradle.plugin
+package dev.keiji.sbom.maven.gradle.plugin
 
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.jupiter.api.Assertions.assertTrue
