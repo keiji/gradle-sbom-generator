@@ -1,4 +1,4 @@
-package dev.keiji.sbom.maven.entity
+package dev.keiji.license.maven.entity
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

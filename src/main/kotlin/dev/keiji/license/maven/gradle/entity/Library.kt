@@ -1,4 +1,4 @@
-package dev.keiji.sbom.maven.gradle.entity
+package dev.keiji.license.maven.gradle.entity
 
 data class Library(
     val groupId: String,

@@ -1,7 +1,7 @@
-package dev.keiji.sbom.maven.gradle
+package dev.keiji.license.maven.gradle
 
-import dev.keiji.sbom.maven.PomParser
-import dev.keiji.sbom.maven.entity.Pom
+import dev.keiji.license.maven.PomParser
+import dev.keiji.license.maven.entity.Pom
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.File

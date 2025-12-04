@@ -1,6 +1,6 @@
-package dev.keiji.sbom.maven.gradle
+package dev.keiji.license.maven.gradle
 
-import dev.keiji.sbom.maven.gradle.entity.Settings
+import dev.keiji.license.maven.gradle.entity.Settings
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import java.io.File

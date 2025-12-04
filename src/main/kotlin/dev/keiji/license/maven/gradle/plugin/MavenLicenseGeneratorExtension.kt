@@ -1,4 +1,4 @@
-package dev.keiji.sbom.maven.gradle.plugin
+package dev.keiji.license.maven.gradle.plugin
 
 import org.gradle.api.Named
 import org.gradle.api.NamedDomainObjectContainer

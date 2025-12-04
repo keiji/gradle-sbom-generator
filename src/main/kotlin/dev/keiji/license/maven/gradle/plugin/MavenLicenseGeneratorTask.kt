@@ -1,7 +1,7 @@
-package dev.keiji.sbom.maven.gradle.plugin
+package dev.keiji.license.maven.gradle.plugin
 
-import dev.keiji.sbom.maven.gradle.Generator
-import dev.keiji.sbom.maven.gradle.entity.Settings
+import dev.keiji.license.maven.gradle.Generator
+import dev.keiji.license.maven.gradle.entity.Settings
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty

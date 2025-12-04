@@ -1,6 +1,6 @@
-package dev.keiji.sbom.maven
+package dev.keiji.license.maven
 
-import dev.keiji.sbom.maven.gradle.entity.Library
+import dev.keiji.license.maven.gradle.entity.Library
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 

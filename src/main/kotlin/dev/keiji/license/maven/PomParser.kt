@@ -1,6 +1,6 @@
-package dev.keiji.sbom.maven
+package dev.keiji.license.maven
 
-import dev.keiji.sbom.maven.entity.Pom
+import dev.keiji.license.maven.entity.Pom
 import org.w3c.dom.Element
 import org.w3c.dom.Node
 import org.w3c.dom.NodeList

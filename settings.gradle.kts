@@ -1,3 +1,3 @@
 
-rootProject.name = "gradle-sbom-generator"
+rootProject.name = "gradle-license-generator"
 

@@ -8,7 +8,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
-group = "dev.keiji.sbom"
+group = "dev.keiji.license"
 version = "0.0.4"
 
 repositories {
@@ -41,14 +41,14 @@ kotlin {
 }
 
 application {
-    mainClass.set("dev.keiji.sbom.maven.gradle.MainKt")
+    mainClass.set("dev.keiji.license.maven.gradle.MainKt")
 }
 
 gradlePlugin {
     plugins {
         create("mavenLicenseGenerator") {
             id = "dev.keiji.maven-license-generator"
-            implementationClass = "dev.keiji.sbom.maven.gradle.plugin.MavenLicenseGeneratorPlugin"
+            implementationClass = "dev.keiji.license.maven.gradle.plugin.MavenLicenseGeneratorPlugin"
         }
     }
 }
@@ -63,8 +63,8 @@ publishing {
         withType<MavenPublication> {
             pom {
                 name = "Maven License Generator"
-                description = "A Gradle plugin to generate SBOM/License info."
-                url = "https://github.com/keiji/gradle-sbom-generator"
+                description = "A Gradle plugin to generate License info."
+                url = "https://github.com/keiji/gradle-license-generator"
                 licenses {
                     license {
                         name = "The Apache License, Version 2.0"
@@ -79,9 +79,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection = "scm:git:https://github.com/keiji/gradle-sbom-generator.git"
-                    developerConnection = "scm:git:ssh://git@github.com/keiji/gradle-sbom-generator.git"
-                    url = "https://github.com/keiji/gradle-sbom-generator"
+                    connection = "scm:git:https://github.com/keiji/gradle-license-generator.git"
+                    developerConnection = "scm:git:ssh://git@github.com/keiji/gradle-license-generator.git"
+                    url = "https://github.com/keiji/gradle-license-generator"
                 }
             }
         }
