@@ -1,4 +1,4 @@
-package dev.keiji.maven.gradle.plugin
+package dev.keiji.sbom.maven.gradle.plugin
 
 import dev.keiji.sbom.maven.gradle.Generator
 import dev.keiji.sbom.maven.gradle.entity.Settings
