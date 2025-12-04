@@ -22,7 +22,9 @@ fun main(args: Array<String>) {
         Json.decodeFromString(it)
     }
 
-    Generator().generate(settings)
+    val currentPath = File(System.getProperty("user.dir"))
+
+    Generator().generate(settings, currentPath)
 
     println("Finished.")
 }
