@@ -12,7 +12,9 @@ import java.io.File
 import java.nio.charset.StandardCharsets
 
 class Generator {
-    fun generate(settings: Settings) {
+    fun generate(
+        settings: Settings
+    ) {
         val dependenciesFile = File(settings.targetFilePath)
 
         val libraryList = mutableListOf<Library>()
@@ -144,7 +146,10 @@ class Generator {
         }
     }
 
-    private fun resolveOutputLocation(path: String, workingDir: File): File {
+    private fun resolveOutputLocation(
+        path: String,
+        workingDir: File
+    ): File {
         val outputFile = File(path)
         return if (outputFile.isAbsolute) {
             outputFile

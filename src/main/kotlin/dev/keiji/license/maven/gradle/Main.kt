@@ -24,5 +24,22 @@ fun main(args: Array<String>) {
 
     Generator().generate(settings)
 
+    val currentPath = File(System.getProperty("user.dir"))
+    val workingDir = File(settings.workingDir)
+
+    settings.outputSettings.values.forEach { outputSetting ->
+        val outputFile = File(outputSetting.path)
+        val sourceFile = if (outputFile.isAbsolute) {
+            outputFile
+        } else {
+            File(workingDir, outputFile.path)
+        }
+
+        if (sourceFile.exists()) {
+            val destFile = File(currentPath, outputFile.name)
+            sourceFile.copyTo(destFile, true)
+        }
+    }
+
     println("Finished.")
 }
