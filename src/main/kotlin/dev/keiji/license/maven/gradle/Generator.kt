@@ -13,8 +13,7 @@ import java.nio.charset.StandardCharsets
 
 class Generator {
     fun generate(
-        settings: Settings,
-        cliExecutionDir: File? = null,
+        settings: Settings
     ) {
         val dependenciesFile = File(settings.targetFilePath)
 
@@ -114,7 +113,7 @@ class Generator {
 
             val jsonText = json.encodeToString(licenseContainer)
 
-            val outputFilePath = resolveOutputLocation(outputSettings.path, workingDir, cliExecutionDir)
+            val outputFilePath = resolveOutputLocation(outputSettings.path, workingDir)
 
             saveFile(
                 jsonText,
@@ -137,7 +136,7 @@ class Generator {
 
             val jsonText = json.encodeToString(licenseContainer)
 
-            val outputFilePath = resolveOutputLocation(outputSettings.path, workingDir, cliExecutionDir)
+            val outputFilePath = resolveOutputLocation(outputSettings.path, workingDir)
 
             saveFile(
                 jsonText,
@@ -149,14 +148,11 @@ class Generator {
 
     private fun resolveOutputLocation(
         path: String,
-        workingDir: File,
-        cliExecutionDir: File?,
+        workingDir: File
     ): File {
         val outputFile = File(path)
         return if (outputFile.isAbsolute) {
             outputFile
-        } else if (cliExecutionDir != null) {
-            File(cliExecutionDir, path)
         } else {
             File(workingDir, path)
         }
