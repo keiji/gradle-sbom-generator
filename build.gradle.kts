@@ -111,25 +111,18 @@ signing {
 }
 
 val proguardJar = tasks.register<ProguardTask>("proguardJar") {
-    val javaHome = System.getProperty("java.home")
-    jdkModules.add("java.base")
-    jdkModules.add("java.sql")
-
     addInput {
         classpath.from(tasks.compileKotlin.get().outputs.files)
     }
-    addLibrary {
-        classpath.from(configurations.runtimeClasspath.get())
-    }
     addOutput {
-        archiveFile.set(layout.buildDirectory.file("libs/${rootProject.name}-${project.version}-proguard.jar"))
+        directory.set(layout.buildDirectory.dir("proguard"))
     }
     rules.addAll(project.file("proguard-rules.pro").readLines())
 }
 
 val shadowJar = tasks.getByName<ShadowJar>("shadowJar") {
     archiveClassifier.set("all")
-    from(proguardJar.get().outputs.files)
+    from(proguardJar.get().outputs.files.asFileTree)
     dependsOn(proguardJar)
 
     from(sourceSets.main.get().output) {
