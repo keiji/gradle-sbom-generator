@@ -14,7 +14,7 @@ You can use this tool as a Gradle Plugin or a CLI tool.
 
 ```kotlin
 plugins {
-    id("dev.keiji.maven-license-generator") version "0.0.4"
+    id("dev.keiji.license.maven-license-generator") version "0.0.4"
 }
 ```
 
