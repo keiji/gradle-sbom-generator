@@ -7,6 +7,8 @@ import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Nested
+import org.gradle.api.tasks.Optional
+import java.io.File
 import javax.inject.Inject
 
 abstract class MavenLicenseGeneratorExtension @Inject constructor(objects: ObjectFactory) {
@@ -57,7 +59,12 @@ open class OutputSettingExtension @Inject constructor(private val name: String, 
     override fun getName(): String = name
 
     @get:Input
+    @get:Optional
     val path: Property<String> = objects.property(String::class.java)
+
+    @get:Input
+    @get:Optional
+    val file: Property<File> = objects.property(File::class.java)
 
     @get:Input
     val override: Property<Boolean> = objects.property(Boolean::class.java).convention(true)

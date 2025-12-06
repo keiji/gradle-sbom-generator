@@ -29,8 +29,13 @@ abstract class MavenLicenseGeneratorTask @Inject constructor() : DefaultTask() {
         val workingDir = projectDirectory.dir(extension.workingDir.get()).get().asFile
 
         val outputSettings = extension.outputSettings.associate {
+            val path = when {
+                it.file.isPresent -> it.file.get().absolutePath
+                it.path.isPresent -> it.path.get()
+                else -> throw IllegalArgumentException("Either 'path' or 'file' must be set for output '${it.name}'.")
+            }
             it.getName() to Settings.OutputSetting(
-                path = it.path.get(),
+                path = path,
                 override = it.override.get(),
                 isPrettyPrintEnabled = it.prettyPrintEnabled.get()
             )
