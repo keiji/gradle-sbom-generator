@@ -64,8 +64,8 @@ publishing {
     publications {
         withType<MavenPublication> {
             pom {
-                name.set("Maven License Generator")
-                description.set("A Gradle plugin to generate License info.")
+                name = "Maven License Generator"
+                description = "A Gradle plugin to generate License info."
                 url = "https://github.com/keiji/gradle-license-generator"
                 withXml {
                     val root = asNode()
