@@ -47,7 +47,7 @@ application {
 gradlePlugin {
     plugins {
         create("mavenLicenseGenerator") {
-            id = "dev.keiji.maven-license-generator"
+            id = "dev.keiji.license.maven-license-generator"
             implementationClass = "dev.keiji.license.maven.gradle.plugin.MavenLicenseGeneratorPlugin"
         }
     }
@@ -74,7 +74,7 @@ publishing {
                 developers {
                     developer {
                         id = "keiji"
-                        name = "Keiji Ariyama"
+                        name = "ARIYAMA Keiji"
                         email = "keiji.ariyama@gmail.com"
                     }
                 }
@@ -89,10 +89,10 @@ publishing {
     repositories {
         maven {
             name = "OSSRH"
-            url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+            url = uri("https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/")
             credentials {
-                username = System.getenv("OSSRH_USERNAME")
-                password = System.getenv("OSSRH_PASSWORD")
+                username = System.getenv("CENTRAL_PORTAL_USERNAME")
+                password = System.getenv("CENTRAL_PORTAL_PASSWORD")
             }
         }
     }

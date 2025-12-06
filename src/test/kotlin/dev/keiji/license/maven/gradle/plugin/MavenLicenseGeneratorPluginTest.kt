@@ -13,7 +13,7 @@ class MavenLicenseGeneratorPluginTest {
         val buildFile = File(tempDir, "build.gradle")
         buildFile.writeText("""
             plugins {
-                id 'dev.keiji.maven-license-generator'
+                id 'dev.keiji.license.maven-license-generator'
                 id 'java'
             }
 
