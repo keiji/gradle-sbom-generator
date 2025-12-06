@@ -61,6 +61,12 @@ java {
     withSourcesJar()
 }
 
+components.withType<AdhocComponentWithVariants> {
+    withVariantsFromConfiguration(configurations["shadowRuntimeElements"]) {
+        skip()
+    }
+}
+
 publishing {
     publications {
         withType<MavenPublication> {
