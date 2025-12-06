@@ -6,6 +6,7 @@ plugins {
     signing
     application
     id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("com.gradleup.nmcp.aggregation") version "1.3.0"
 }
 
 group = "dev.keiji.license"
@@ -48,6 +49,8 @@ gradlePlugin {
     plugins {
         create("mavenLicenseGenerator") {
             id = "dev.keiji.license.maven-license-generator"
+            displayName = "Maven License Generator"
+            description = "A Gradle plugin to generate License info."
             implementationClass = "dev.keiji.license.maven.gradle.plugin.MavenLicenseGeneratorPlugin"
         }
     }
@@ -86,16 +89,16 @@ publishing {
             }
         }
     }
-    repositories {
-        maven {
-            name = "OSSRH"
-            url = uri("https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/")
-            credentials {
-                username = System.getenv("CENTRAL_PORTAL_USERNAME")
-                password = System.getenv("CENTRAL_PORTAL_PASSWORD")
-            }
-        }
+}
+
+nmcpAggregation {
+    centralPortal {
+        username = System.getenv("CENTRAL_PORTAL_USERNAME")
+        password = System.getenv("CENTRAL_PORTAL_PASSWORD")
+        publishingType = "USER_MANAGED"
     }
+
+    publishAllProjectsProbablyBreakingProjectIsolation()
 }
 
 signing {
