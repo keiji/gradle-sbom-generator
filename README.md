@@ -179,6 +179,21 @@ BUILD SUCCESSFUL in 662ms
 java -jar build/libs/gradle-license-generator-0.0.4-all.jar ./settings.json
 ```
 
+## How to Publish
+
+1. Set the environment variables.
+
+```bash
+export CENTRAL_PORTAL_USERNAME=<username>
+export CENTRAL_PORTAL_PASSWORD=<password>
+```
+
+2. Run the task.
+
+```bash
+./gradlew publishAllPublicationsToCentralPortal
+```
+
 ## Output Example
 
 <details>
