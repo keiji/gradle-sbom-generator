@@ -1,3 +1,6 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import io.github.sgtsilvio.gradle.proguard.ProguardTask
+
 plugins {
     kotlin("jvm") version "2.2.21"
     kotlin("plugin.serialization") version "2.2.21"
@@ -7,6 +10,7 @@ plugins {
     application
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("com.gradleup.nmcp.aggregation") version "1.3.0"
+    id("io.github.sgtsilvio.gradle.proguard") version "0.8.0"
 }
 
 group = "dev.keiji.license"
@@ -104,4 +108,31 @@ nmcpAggregation {
 signing {
     useGpgCmd()
     sign(publishing.publications)
+}
+
+val proguardJar = tasks.register<ProguardTask>("proguardJar") {
+    val javaHome = System.getProperty("java.home")
+    jdkModules.add("java.base")
+    jdkModules.add("java.sql")
+
+    addInput {
+        classpath.from(tasks.compileKotlin.get().outputs.files)
+    }
+    addLibrary {
+        classpath.from(configurations.runtimeClasspath.get())
+    }
+    addOutput {
+        archiveFile.set(layout.buildDirectory.file("libs/${rootProject.name}-${project.version}-proguard.jar"))
+    }
+    rules.addAll(project.file("proguard-rules.pro").readLines())
+}
+
+val shadowJar = tasks.getByName<ShadowJar>("shadowJar") {
+    archiveClassifier.set("all")
+    from(proguardJar.get().outputs.files)
+    dependsOn(proguardJar)
+
+    from(sourceSets.main.get().output) {
+        exclude("*")
+    }
 }
