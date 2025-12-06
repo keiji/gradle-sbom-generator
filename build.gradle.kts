@@ -6,6 +6,7 @@ plugins {
     signing
     application
     id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("com.gradleup.nmcp") version "0.0.8"
 }
 
 group = "dev.keiji.license"
@@ -86,15 +87,13 @@ publishing {
             }
         }
     }
-    repositories {
-        maven {
-            name = "OSSRH"
-            url = uri("https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/")
-            credentials {
-                username = System.getenv("CENTRAL_PORTAL_USERNAME")
-                password = System.getenv("CENTRAL_PORTAL_PASSWORD")
-            }
-        }
+}
+
+nmcp {
+    publishAllPublications {
+        username = System.getenv("CENTRAL_PORTAL_USERNAME")
+        password = System.getenv("CENTRAL_PORTAL_PASSWORD")
+        publicationType = "USER_MANAGED"
     }
 }
 
