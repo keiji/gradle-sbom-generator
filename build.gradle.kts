@@ -11,6 +11,7 @@ plugins {
 
 group = "dev.keiji.license"
 version = "0.0.4"
+description = "A Gradle plugin to generate License info."
 
 repositories {
     mavenCentral()
@@ -63,9 +64,18 @@ publishing {
     publications {
         withType<MavenPublication> {
             pom {
-                name = "Maven License Generator"
-                description = "A Gradle plugin to generate License info."
+                name.set("Maven License Generator")
+                description.set("A Gradle plugin to generate License info.")
                 url = "https://github.com/keiji/gradle-license-generator"
+                withXml {
+                    val root = asNode()
+                    if ((root.get("name") as List<*>).isEmpty()) {
+                        root.appendNode("name", "Maven License Generator")
+                    }
+                    if ((root.get("description") as List<*>).isEmpty()) {
+                        root.appendNode("description", "A Gradle plugin to generate License info.")
+                    }
+                }
                 licenses {
                     license {
                         name = "The Apache License, Version 2.0"
