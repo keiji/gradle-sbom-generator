@@ -98,6 +98,12 @@ nmcp {
 }
 
 signing {
-    useGpgCmd()
+    val signingKey = System.getenv("SIGNING_KEY")
+    val signingPassword = System.getenv("SIGNING_PASSWORD")
+    if (!signingKey.isNullOrEmpty() && !signingPassword.isNullOrEmpty()) {
+        useInMemoryPgpKeys(signingKey, signingPassword)
+    } else {
+        useGpgCmd()
+    }
     sign(publishing.publications)
 }
