@@ -115,13 +115,13 @@ val proguardJar = tasks.register<ProguardTask>("proguardJar") {
         classpath.from(tasks.compileKotlin.get().outputs.files)
     }
     addOutput {
-        directory.set(layout.buildDirectory.dir("proguard"))
+        directory = layout.buildDirectory.dir("proguard")
     }
     rules.addAll(project.file("proguard-rules.pro").readLines())
 }
 
 val shadowJar = tasks.getByName<ShadowJar>("shadowJar") {
-    archiveClassifier.set("all")
+    archiveClassifier = "all"
     from(proguardJar.get().outputs.files.asFileTree)
     dependsOn(proguardJar)
 

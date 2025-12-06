@@ -1,5 +1,4 @@
 -dontwarn
--dontwarn
 -keep class dev.keiji.license.maven.gradle.MainKt {
     public static void main(java.lang.String[]);
 }
