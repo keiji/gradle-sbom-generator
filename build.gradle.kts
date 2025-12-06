@@ -21,8 +21,10 @@ repositories {
 }
 
 dependencies {
+    implementation(kotlin("reflect"))
     implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.6")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0-RC")
     implementation("com.squareup.okhttp3:okhttp:5.3.2")
 
     testImplementation(kotlin("test"))
@@ -110,22 +112,18 @@ signing {
     sign(publishing.publications)
 }
 
-val proguardJar = tasks.register<ProguardTask>("proguardJar") {
-    addInput {
-        classpath.from(tasks.compileKotlin.get().outputs.files)
-    }
-    addOutput {
-        directory = layout.buildDirectory.dir("proguard")
-    }
-    rules.addAll(project.file("proguard-rules.pro").readLines())
+val shadowJar = tasks.getByName<ShadowJar>("shadowJar") {
+    archiveClassifier.set("all")
+    finalizedBy("proguardJar")
 }
 
-val shadowJar = tasks.getByName<ShadowJar>("shadowJar") {
-    archiveClassifier = "all"
-    from(proguardJar.get().outputs.files.asFileTree)
-    dependsOn(proguardJar)
-
-    from(sourceSets.main.get().output) {
-        exclude("*")
+val proguardJar = tasks.register<ProguardTask>("proguardJar") {
+    dependsOn(shadowJar)
+    addInput {
+        classpath.from(shadowJar.archiveFile.get())
     }
+    addOutput {
+        archiveFile.set(layout.buildDirectory.file("libs/${rootProject.name}-${project.version}-all-min.jar"))
+    }
+    rules.addAll(project.file("proguard-rules.pro").readLines())
 }
