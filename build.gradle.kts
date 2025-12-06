@@ -38,7 +38,7 @@ tasks.withType<Zip> {
 }
 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(17)
 }
 
 application {
