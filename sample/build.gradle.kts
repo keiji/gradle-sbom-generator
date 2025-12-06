@@ -1,5 +1,5 @@
 plugins {
-    id("dev.keiji.maven-license-generator")
+    id("dev.keiji.license.maven-license-generator")
     `java`
 }
 
