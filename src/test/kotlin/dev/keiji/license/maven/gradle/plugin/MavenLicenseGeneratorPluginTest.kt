@@ -9,7 +9,7 @@ import org.junit.jupiter.api.io.TempDir
 class MavenLicenseGeneratorPluginTest {
 
     @Test
-    fun `plugin registers task and runs successfully`(@TempDir tempDir: File) {
+    fun `plugin registers task and runs successfully(path)`(@TempDir tempDir: File) {
         val buildFile = File(tempDir, "build.gradle")
         buildFile.writeText("""
             plugins {
@@ -57,5 +57,56 @@ class MavenLicenseGeneratorPluginTest {
 
         assertTrue(result.output.contains("BUILD SUCCESSFUL"))
         assertTrue(File(tempDir, "tmp/license.json").exists())
+    }
+
+    @Test
+    fun `plugin registers task and runs successfully(File)`(@TempDir tempDir: File) {
+        val buildFile = File(tempDir, "build.gradle")
+        buildFile.writeText("""
+            plugins {
+                id 'dev.keiji.license.maven-license-generator'
+                id 'java'
+            }
+
+            repositories {
+                mavenCentral()
+            }
+
+            dependencies {
+                implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+            }
+
+            mavenLicenseGenerator {
+                targets {
+                    create("release") {
+                        configurations = ['runtimeClasspath']
+                    }
+                }
+                workingDir = 'tmp'
+                localRepositoryDirs = []
+                repositoryUrls = ['https://repo1.maven.org/maven2']
+                removeConflictingVersions = true
+                ignoreScopes = ['test', 'runtime']
+                includeDependencies = true
+                includeSettings = false
+
+                outputSettings.create("complete") {
+                    file.set(new File(project.projectDir, "license.json"))
+                    override.set(true)
+                    prettyPrintEnabled.set(true)
+                }
+            }
+        """.trimIndent())
+
+        val result = GradleRunner.create()
+            .withProjectDir(tempDir)
+            .withPluginClasspath()
+            .withArguments("generateMavenLicense")
+            .build()
+
+        println(result.output)
+
+        assertTrue(result.output.contains("BUILD SUCCESSFUL"))
+        assertTrue(File(tempDir, "license.json").exists())
     }
 }
