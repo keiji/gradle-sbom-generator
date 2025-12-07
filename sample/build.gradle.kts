@@ -18,8 +18,8 @@ java {
 }
 
 mavenLicenseGenerator {
-    workingDirFile = layout.buildDirectory.dir("license").get().asFile
-    localRepositoryDirFiles = listOf(File(System.getProperty("user.home"), ".m2/repository"))
+    workingDir = layout.buildDirectory.dir("license").get().asFile
+    localRepositoryDirs = listOf(File(System.getProperty("user.home"), ".m2/repository"))
     repositoryUrls = listOf("https://repo1.maven.org/maven2")
     removeConflictingVersions = true
     ignoreScopes = listOf("test", "provided")
@@ -35,7 +35,7 @@ mavenLicenseGenerator {
     outputSettings {
         // key must be "complete" or "incomplete" based on Generator implementation
         create("complete") {
-            path = layout.buildDirectory.file("licenses.json").get().asFile.absolutePath
+            path = layout.buildDirectory.file("licenses.json").get().asFile
             prettyPrintEnabled = true
         }
     }

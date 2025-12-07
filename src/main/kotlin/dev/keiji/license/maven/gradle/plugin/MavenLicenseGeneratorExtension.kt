@@ -20,19 +20,11 @@ abstract class MavenLicenseGeneratorExtension @Inject constructor(objects: Objec
 
     @get:Input
     @get:Optional
-    abstract val workingDir: Property<String>
+    abstract val workingDir: Property<File>
 
     @get:Input
     @get:Optional
-    abstract val workingDirFile: Property<File>
-
-    @get:Input
-    @get:Optional
-    abstract val localRepositoryDirs: ListProperty<String>
-
-    @get:Input
-    @get:Optional
-    abstract val localRepositoryDirFiles: ListProperty<File>
+    abstract val localRepositoryDirs: ListProperty<File>
 
     @get:Input
     abstract val repositoryUrls: ListProperty<String>
@@ -70,11 +62,7 @@ open class OutputSettingExtension @Inject constructor(private val name: String, 
 
     @get:Input
     @get:Optional
-    val path: Property<String> = objects.property(String::class.java)
-
-    @get:Input
-    @get:Optional
-    val file: Property<File> = objects.property(File::class.java)
+    val path: Property<File> = objects.property(File::class.java)
 
     @get:Input
     val override: Property<Boolean> = objects.property(Boolean::class.java).convention(true)

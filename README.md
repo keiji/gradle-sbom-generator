@@ -30,7 +30,7 @@ mavenLicenseGenerator {
     }
 
     // Temporary working directory
-    workingDir = layout.buildDirectory.dir("tmp/maven-license-generator").get().asFile.absolutePath
+    workingDir = layout.buildDirectory.dir("tmp/maven-license-generator").get().asFile
 
     // Repositories to search for POM files
     repositoryUrls = listOf(
@@ -42,12 +42,12 @@ mavenLicenseGenerator {
     // Output settings
     outputSettings {
         create("complete") {
-            path = layout.buildDirectory.file("licenses.json").get().asFile.absolutePath
+            path = layout.buildDirectory.file("licenses.json").get().asFile
             override = true
             prettyPrintEnabled = true
         }
         create("incomplete") {
-            path = layout.buildDirectory.file("licenses-incomplete.json").get().asFile.absolutePath
+            path = layout.buildDirectory.file("licenses-incomplete.json").get().asFile
             override = false
             prettyPrintEnabled = true
         }
