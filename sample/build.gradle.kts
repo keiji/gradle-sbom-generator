@@ -18,8 +18,8 @@ java {
 }
 
 mavenLicenseGenerator {
-    workingDir = layout.buildDirectory.dir("license").get().asFile.absolutePath
-    localRepositoryDirs = listOf(System.getProperty("user.home") + "/.m2/repository")
+    workingDirFile = layout.buildDirectory.dir("license").get().asFile
+    localRepositoryDirFiles = listOf(File(System.getProperty("user.home"), ".m2/repository"))
     repositoryUrls = listOf("https://repo1.maven.org/maven2")
     removeConflictingVersions = true
     ignoreScopes = listOf("test", "provided")

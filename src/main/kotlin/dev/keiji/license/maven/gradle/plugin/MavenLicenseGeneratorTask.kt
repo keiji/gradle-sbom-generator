@@ -26,7 +26,19 @@ abstract class MavenLicenseGeneratorTask @Inject constructor() : DefaultTask() {
     fun generate() {
         val targetFile = dependenciesFile.get().asFile
 
-        val workingDir = projectDirectory.dir(extension.workingDir.get()).get().asFile
+        val workingDir = when {
+            extension.workingDirFile.isPresent -> extension.workingDirFile.get()
+            extension.workingDir.isPresent -> projectDirectory.dir(extension.workingDir.get()).get().asFile
+            else -> throw IllegalArgumentException("Either 'workingDir' or 'workingDirFile' must be set.")
+        }
+
+        val localRepositoryDirs = when {
+            extension.localRepositoryDirFiles.isPresent && extension.localRepositoryDirFiles.get().isNotEmpty() -> {
+                extension.localRepositoryDirFiles.get().map { it.absolutePath }
+            }
+            extension.localRepositoryDirs.isPresent -> extension.localRepositoryDirs.get()
+            else -> emptyList()
+        }
 
         val outputSettings = extension.outputSettings.associate {
             val path = when {
@@ -44,7 +56,7 @@ abstract class MavenLicenseGeneratorTask @Inject constructor() : DefaultTask() {
         val settings = Settings(
             targetFilePath = targetFile.absolutePath,
             workingDir = workingDir.absolutePath,
-            localRepositoryDirs = extension.localRepositoryDirs.get(),
+            localRepositoryDirs = localRepositoryDirs,
             repositoryUrls = extension.repositoryUrls.get(),
             removeConflictingVersions = extension.removeConflictingVersions.get(),
             ignoreScopes = extension.ignoreScopes.get(),
