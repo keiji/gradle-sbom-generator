@@ -40,8 +40,7 @@ java {
 
 publishing {
     publications {
-        create<MavenPublication>("maven") {
-            from(components["java"])
+        create<MavenPublication>("pluginMaven") {
             groupId = "dev.keiji.license"
             artifactId = "gradle-license-generator"
             version = "0.0.5"

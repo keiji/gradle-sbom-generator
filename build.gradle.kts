@@ -5,8 +5,6 @@ plugins {
     kotlin("jvm") version "2.2.21" apply false
     kotlin("plugin.serialization") version "2.2.21" apply false
     id("com.github.johnrengelman.shadow") version "8.1.1" apply false
-    `java-gradle-plugin`
-    signing
     id("com.gradleup.nmcp.aggregation") version "1.3.0"
 }
 
@@ -31,13 +29,13 @@ subprojects {
 
 nmcpAggregation {
     centralPortal {
-        username = System.getenv("CENTRAL_PORTAL_USERNAME")
-        password = System.getenv("CENTRAL_PORTAL_PASSWORD")
+        username = System.getenv("CENTRAL_PORTAL_USERNAME") ?: "github-actions"
+        password = System.getenv("CENTRAL_PORTAL_PASSWORD") ?: "github-actions"
         publishingType = "USER_MANAGED"
     }
-
 }
 
 dependencies {
     add("nmcpAggregation", project(":gradle-plugin"))
+    add("nmcpAggregation", project(":core"))
 }
