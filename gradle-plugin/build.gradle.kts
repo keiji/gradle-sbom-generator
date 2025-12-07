@@ -40,14 +40,11 @@ java {
 
 publishing {
     publications {
-        create<MavenPublication>("maven") {
-            from(components["java"])
+        withType<MavenPublication> {
             groupId = "dev.keiji.license"
-            artifactId = "gradle-license-generator"
-            version = "0.0.5"
-
+            artifactId = "gradle-plugin"
             pom {
-                name = "Maven License Generator"
+                name = "Maven License Generator Plugin"
                 description = "A Gradle plugin to generate License info."
                 url = "https://github.com/keiji/gradle-license-generator"
                 licenses {
