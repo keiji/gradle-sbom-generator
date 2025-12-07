@@ -3,7 +3,6 @@ plugins {
     `java-gradle-plugin`
     `maven-publish`
     signing
-    `kotlin-dsl`
 }
 
 repositories {
