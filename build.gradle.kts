@@ -62,6 +62,7 @@ java {
 }
 
 components.withType<AdhocComponentWithVariants> {
+    // Exclude shadow jar from Maven publication
     withVariantsFromConfiguration(configurations["shadowRuntimeElements"]) {
         skip()
     }
