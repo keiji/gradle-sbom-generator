@@ -3,3 +3,5 @@ plugins {
 }
 
 rootProject.name = "gradle-license-generator"
+
+include("core", "cli", "gradle-plugin")
