@@ -25,6 +25,12 @@ jobs:
     - name: Build and Test Root Project
       run: ./gradlew check
 
+    - name: Verify shadowJar
+      run: ./gradlew shadowJar
+
+    - name: Verify publishAggregationToCentralPortal
+      run: ./gradlew publishAggregationToCentralPortal --dry-run
+
     - name: Build and Test Sample Project
       run: |
         cd sample
