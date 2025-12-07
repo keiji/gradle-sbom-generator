@@ -14,7 +14,7 @@ You can use this tool as a Gradle Plugin or a CLI tool.
 
 ```kotlin
 plugins {
-    id("dev.keiji.license.maven-license-generator") version "0.0.4"
+    id("dev.keiji.license.maven-license-generator") version "0.0.5"
 }
 ```
 
@@ -176,7 +176,7 @@ BUILD SUCCESSFUL in 662ms
 4. Run the jar.
 
 ```bash
-java -jar build/libs/gradle-license-generator-0.0.4-all.jar ./settings.json
+java -jar build/libs/gradle-license-generator-0.0.5-all.jar ./settings.json
 ```
 
 ## How to Publish
