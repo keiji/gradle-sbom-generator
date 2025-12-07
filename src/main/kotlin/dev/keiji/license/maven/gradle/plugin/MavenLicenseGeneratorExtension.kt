@@ -19,10 +19,20 @@ abstract class MavenLicenseGeneratorExtension @Inject constructor(objects: Objec
         }
 
     @get:Input
+    @get:Optional
     abstract val workingDir: Property<String>
 
     @get:Input
+    @get:Optional
+    abstract val workingDirFile: Property<File>
+
+    @get:Input
+    @get:Optional
     abstract val localRepositoryDirs: ListProperty<String>
+
+    @get:Input
+    @get:Optional
+    abstract val localRepositoryDirFiles: ListProperty<File>
 
     @get:Input
     abstract val repositoryUrls: ListProperty<String>
