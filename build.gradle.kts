@@ -36,5 +36,8 @@ nmcpAggregation {
         publishingType = "USER_MANAGED"
     }
 
-    publishAllProjectsProbablyBreakingProjectIsolation()
+}
+
+dependencies {
+    add("nmcpAggregation", project(":gradle-plugin"))
 }
