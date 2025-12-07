@@ -176,7 +176,7 @@ BUILD SUCCESSFUL in 662ms
 4. Run the jar.
 
 ```bash
-java -jar build/libs/gradle-license-generator-0.0.5-all.jar ./settings.json
+java -jar cli/build/libs/cli-0.0.5-all.jar ./settings.json
 ```
 
 ## How to Publish
