@@ -18,6 +18,7 @@ java {
 }
 
 mavenLicenseGenerator {
+    enabled = true
     workingDir = layout.buildDirectory.dir("license").get().asFile
     localRepositoryDirs = listOf(File(System.getProperty("user.home"), ".m2/repository"))
     repositoryUrls = listOf("https://repo1.maven.org/maven2")

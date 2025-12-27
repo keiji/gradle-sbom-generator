@@ -16,6 +16,10 @@ class MavenLicenseGeneratorPlugin : Plugin<Project> {
         }
 
         project.afterEvaluate {
+            if (!extension.enabled.getOrElse(false)) {
+                return@afterEvaluate
+            }
+
             val configurationNames = extension.targets.flatMap { it.configurations.get() }.toSet()
 
             if (configurationNames.isNotEmpty()) {
