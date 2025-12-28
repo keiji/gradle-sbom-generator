@@ -22,15 +22,8 @@ internal class Processor {
         workingDir: File,
         pomCache: MutableMap<String, Pom>,
     ): Pom? {
-        val pomFile = downloadPom(
-            localRepositoryDirs, repositoryUrls, pom.groupId, pom.artifactId, pom.version, workingDir
-        ) ?: return null
-        val pom = PomParser().parseFile(pomFile, depth + 1) ?: return null
-
-        pomCache[pom.key] = pom
-
-        pom.parent?.let {
-            pom.parent = if (pomCache.contains(it.key)) {
+        val parentPom = pom.parent?.let {
+            if (pomCache.contains(it.key)) {
                 pomCache[it.key]
             } else {
                 downloadAllPom(
@@ -44,6 +37,13 @@ internal class Processor {
                 )
             }
         }
+
+        val pomFile = downloadPom(
+            localRepositoryDirs, repositoryUrls, pom.groupId, pom.artifactId, pom.version, workingDir
+        ) ?: return null
+        val pom = PomParser().parseFile(pomFile, depth + 1, parentPom) ?: return null
+
+        pomCache[pom.key] = pom
 
         val props = mutableMapOf<String, String>().also {
             pom.getAllProperties(it)

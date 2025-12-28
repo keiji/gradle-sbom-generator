@@ -44,7 +44,7 @@ class Generator {
             return@map if (pomFile == null) {
                 Pom(it.groupId, it.artifactId, it.version)
             } else {
-                PomParser().parseFile(pomFile, it.depth)
+                PomParser().parseFile(pomFile, it.depth, null)
             }
         }.filterNotNull()
 
