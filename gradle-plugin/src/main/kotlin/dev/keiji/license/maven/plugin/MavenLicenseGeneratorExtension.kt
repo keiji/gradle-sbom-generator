@@ -12,6 +12,9 @@ import java.io.File
 import javax.inject.Inject
 
 abstract class MavenLicenseGeneratorExtension @Inject constructor(objects: ObjectFactory) {
+    @get:Input
+    val enabled: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
+
     @get:Nested
     val targets: NamedDomainObjectContainer<TargetExtension> =
         objects.domainObjectContainer(TargetExtension::class.java) { name ->

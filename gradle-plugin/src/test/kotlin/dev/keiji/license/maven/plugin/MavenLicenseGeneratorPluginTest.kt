@@ -26,6 +26,7 @@ class MavenLicenseGeneratorPluginTest {
             }
 
             mavenLicenseGenerator {
+                enabled = true
                 targets {
                     create("release") {
                         configurations = ['runtimeClasspath']
