@@ -15,6 +15,7 @@ class PomParser {
     internal fun parseFile(
         file: File,
         depth: Int,
+        parentPom: Pom?,
     ): Pom? {
         val document = try {
             DocumentBuilderFactory
@@ -179,6 +180,10 @@ class PomParser {
                 dependencyScope,
             )
         }.filterNotNull().toList()
+
+        if (parentPom != null) {
+            result.merge(parentPom)
+        }
 
         return result
     }

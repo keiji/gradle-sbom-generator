@@ -73,6 +73,35 @@ data class Pom(
     @Transient
     var properties: Map<String, String> = emptyMap()
 
+    fun merge(parent: Pom) {
+        if (name == null) {
+            name = parent.name
+        }
+        if (url == null) {
+            url = parent.url
+        }
+        if (licenses.isEmpty()) {
+            licenses = parent.licenses
+        }
+        if (developers.isEmpty()) {
+            developers = parent.developers
+        }
+        if (organization == null) {
+            organization = parent.organization
+        }
+
+        val dependencyKeys = dependencies.map { it.key }.toSet()
+        val mergedDependencies = mutableListOf<Dependency>().also {
+            it.addAll(dependencies)
+        }
+        parent.dependencies.forEach {
+            if (!dependencyKeys.contains(it.key)) {
+                mergedDependencies.add(it)
+            }
+        }
+        dependencies = mergedDependencies
+    }
+
     @Serializable
     data class License(val name: String, val url: String?)
 
@@ -102,6 +131,8 @@ data class Pom(
         @SerialName("scope")
         var scope: String? = null,
     ) {
+        val key: String
+            get() = "$groupId:$artifactId"
     }
 
 }

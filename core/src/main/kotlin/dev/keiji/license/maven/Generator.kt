@@ -28,7 +28,8 @@ class Generator {
             it.mkdirs()
         }
 
-        val processor = Processor()
+        val pomParser = PomParser()
+        val processor = Processor(pomParser)
 
         val pomCache = mutableMapOf<String, Pom>()
 
@@ -44,15 +45,14 @@ class Generator {
             return@map if (pomFile == null) {
                 Pom(it.groupId, it.artifactId, it.version)
             } else {
-                PomParser().parseFile(pomFile, it.depth)
+                pomParser.parseFile(pomFile, it.depth, null)
             }
         }.filterNotNull()
 
-        pomList.forEach {
-            pomCache[it.key] = it
-        }
-
         pomList.forEach { pom ->
+            if (pomCache.containsKey(pom.key)) {
+                return@forEach
+            }
             processor.downloadAllPom(
                 settings.localRepositoryDirs,
                 settings.repositoryUrls,
