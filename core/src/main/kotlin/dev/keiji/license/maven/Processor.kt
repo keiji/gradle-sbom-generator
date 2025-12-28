@@ -1,6 +1,5 @@
 package dev.keiji.license.maven
 
-import dev.keiji.license.maven.PomParser
 import dev.keiji.license.maven.entity.Pom
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -8,12 +7,14 @@ import java.io.File
 import java.net.HttpURLConnection
 import kotlin.random.Random
 
-internal class Processor {
+internal open class Processor(
+    private val pomParser: PomParser,
+) {
     private val rand = Random(System.currentTimeMillis())
 
     private val client: OkHttpClient = OkHttpClient()
 
-    internal fun downloadAllPom(
+    internal open fun downloadAllPom(
         localRepositoryDirs: List<String>,
         repositoryUrls: List<String>,
         ignoreScopes: List<String>,
@@ -22,36 +23,43 @@ internal class Processor {
         workingDir: File,
         pomCache: MutableMap<String, Pom>,
     ): Pom? {
-        val parentPom = pom.parent?.let {
-            if (pomCache.contains(it.key)) {
-                pomCache[it.key]
+        if (pomCache.contains(pom.key)) {
+            return pomCache[pom.key]
+        }
+
+        val pomFile = downloadPom(
+            localRepositoryDirs, repositoryUrls, pom.groupId, pom.artifactId, pom.version, workingDir
+        ) ?: return null
+
+        val tempPom = pomParser.parseFile(pomFile, depth + 1, null) ?: return null
+        pom.parent = tempPom.parent
+
+        val parentPom = pom.parent?.let { parent ->
+            if (pomCache.contains(parent.key)) {
+                pomCache[parent.key]
             } else {
                 downloadAllPom(
                     localRepositoryDirs,
                     repositoryUrls,
                     ignoreScopes,
-                    it,
+                    parent,
                     depth + 1,
                     workingDir,
                     pomCache
                 )
             }
         }
+        val mergedPom = pomParser.parseFile(pomFile, depth + 1, parentPom) ?: return null
 
-        val pomFile = downloadPom(
-            localRepositoryDirs, repositoryUrls, pom.groupId, pom.artifactId, pom.version, workingDir
-        ) ?: return null
-        val pom = PomParser().parseFile(pomFile, depth + 1, parentPom) ?: return null
-
-        pomCache[pom.key] = pom
+        pomCache[pom.key] = mergedPom
 
         val props = mutableMapOf<String, String>().also {
-            pom.getAllProperties(it)
+            mergedPom.getAllProperties(it)
         }
 
-        pom.name = pom.name?.replaceProperties(props)
+        mergedPom.name = mergedPom.name?.replaceProperties(props)
 
-        pom.dependencies.forEach {
+        mergedPom.dependencies.forEach {
             it.groupId = it.groupId.replaceProperties(props)
             it.artifactId = it.artifactId.replaceProperties(props)
             it.version = processVersionRange(it.version.replaceProperties(props)) ?: return@forEach
@@ -77,10 +85,10 @@ internal class Processor {
             ) ?: return@forEach
         }
 
-        return pom
+        return mergedPom
     }
 
-    internal fun downloadPom(
+    internal open fun downloadPom(
         localRepositoryDirs: List<String>,
         repositoryUrls: List<String>,
         groupId: String,

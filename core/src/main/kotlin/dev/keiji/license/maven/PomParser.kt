@@ -184,7 +184,6 @@ class PomParser {
         if (parentPom != null) {
             result.merge(parentPom)
         }
-        result.parent = null
 
         return result
     }

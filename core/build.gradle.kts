@@ -11,10 +11,15 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:6.0.1")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:6.0.1")
+    testImplementation("org.mockito:mockito-inline:3.12.4")
+    testImplementation("org.mockito:mockito-junit-jupiter:3.12.4")
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    testLogging {
+        showStandardStreams = true
+    }
 }
 
 java {
