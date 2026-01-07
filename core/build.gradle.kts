@@ -11,8 +11,8 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:6.0.2")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:6.0.2")
-    testImplementation("org.mockito:mockito-inline:5.2.0")
-    testImplementation("org.mockito:mockito-junit-jupiter:5.2.0")
+    testImplementation("org.mockito:mockito-inline:5.21.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.21.0")
 }
 
 tasks.withType<Test> {
