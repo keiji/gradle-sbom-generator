@@ -13,8 +13,8 @@ dependencies {
     implementation(project(":core"))
     gradleApi()
     testImplementation(kotlin("test"))
-    testImplementation("org.junit.jupiter:junit-jupiter-api:6.0.1")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:6.0.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:6.0.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:6.0.2")
     testImplementation(gradleTestKit())
 }
 
